@@ -1,0 +1,27 @@
+cache:
+  mount:
+    - /drone/.ivy
+
+build:
+  image: 1science/sbt:0.13.8-oracle-jre-8
+  commands:
+    - sbt clean test assembly -Dsbt.ivy.home=/drone/.ivy
+
+publish:
+  docker:
+    username: kevinbacon
+    password: pa55word
+    email: kevin.bacon@mail.com
+    repo: demos/drone-with-scala
+    tag: $$BRANCH
+
+notify:
+  email:
+    from: drone@company.com
+    host: mail.company.com
+    username: company
+    password: $$SMTP_PASSWORD
+    when:
+      success: false
+      failure: true
+      change: true
